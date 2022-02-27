@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import Archivio from "./Archivio";
+import Layout from "./Layout";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // 1. Importiamo i Provider per la nostra App:
 // - App Provider permette di far accedere a tutti i suoi figli i valori nel nostro context
@@ -22,7 +25,26 @@ ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
       <ChakraProvider theme={theme}>
-        <App />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <Layout>
+                  <App />
+                </Layout>
+              }
+            />
+            <Route
+              path='/archivio'
+              element={
+                <Layout>
+                  <Archivio />
+                </Layout>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </ChakraProvider>
     </AppProvider>
   </React.StrictMode>,
