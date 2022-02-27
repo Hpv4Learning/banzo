@@ -29,8 +29,6 @@ const Board = () => {
   const toggleCardModal = context.toggleCardModal;
   const activeColumns = context.activeColumns;
 
-  console.log(data.storage);
-
   //Controlla apertura del modal per creare un colonna
   const [isOpen, setIsOpen] = useState();
 
@@ -38,7 +36,8 @@ const Board = () => {
   const [input, setInput] = useState("");
 
   //Crea una colonna, svuota l'input e chiude il modal
-  const aggiungiColonna = () => {
+  const aggiungiColonna = (e) => {
+    e.preventDefault();
     creaColonna(input);
     setInput("");
     setIsOpen(false);
@@ -83,10 +82,21 @@ const Board = () => {
           <ModalHeader>Crea un colonna</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input value={input} onChange={(e) => setInput(e.target.value)} />
+            <form onSubmit={aggiungiColonna} id='column-input'>
+              <Input
+                value={input}
+                required
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </form>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme='pink' mr={3} onClick={aggiungiColonna}>
+            <Button
+              colorScheme='purple'
+              type='submit'
+              form='column-input'
+              mr={3}
+            >
               Crea Colonna
             </Button>
             <Button variant='ghost' onClick={() => setIsOpen(!isOpen)}>

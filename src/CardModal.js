@@ -42,7 +42,7 @@ const CardModal = ({ isEdit, id }) => {
     descrizione: cardData ? cardData.descrizione : "",
   });
 
-  const handleCreation = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     addTaskToColumn(column, { ...input, done: checked });
     setInput({
@@ -53,13 +53,6 @@ const CardModal = ({ isEdit, id }) => {
     });
     setChecked(false);
   };
-
-  const handleEdit = (e) => {
-    e.preventDefault();
-    editCards(id, input);
-  };
-
-  const handleSubmit = isEdit ? handleEdit : handleCreation;
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });

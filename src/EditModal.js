@@ -15,9 +15,6 @@ import {
 const CardModal = ({ id }) => {
   // State per gestire input
 
-  //Controlla che la task sia spuntata come completata o no
-  const [checked, setChecked] = React.useState(false);
-
   // Tiene traccia della colonna che l'utente seleziona per inserirci la card
   const [column, setColumn] = React.useState("");
   const context = useGlobalContext();
@@ -27,16 +24,20 @@ const CardModal = ({ id }) => {
   const editCards = context.editCards;
   const data = context.toDoList;
 
-  const cardData = data.columns.find((x) => {
+  const cardColumn = data.columns.find((x) => {
     if (x.tasks.some((y) => y.id === id)) {
-      console.log("eccomi");
-      return x.tasks.find((z) => z.id === id);
+      return true;
     }
     return false;
   });
 
+  const cardData = cardColumn && cardColumn.tasks.find((x) => x.id === id);
+
+  //Controlla che la task sia spuntata come completata o no
+  const [checked, setChecked] = React.useState(cardData && cardData.done);
+
   const [input, setInput] = React.useState({
-    titolo: cardData ? cardData.titolo : "",
+    titolo: cardData.titolo ? cardData.titolo : "",
     data: cardData ? cardData.data : new Date(Date.now()),
     priorita: cardData ? cardData.priorita : 1,
     descrizione: cardData ? cardData.descrizione : "",
@@ -44,7 +45,7 @@ const CardModal = ({ id }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    editCards(id, input);
+    editCards(id, { ...input, done: checked });
   };
 
   const handleChange = (e) => {
@@ -127,7 +128,7 @@ const CardModal = ({ id }) => {
         </ModalBody>
         <ModalFooter>
           <Button colorScheme='purple' type='submit' form='card-modal' mr={3}>
-            Modficia
+            Modifica
           </Button>
           <Button variant='ghost' onClick={toggleEditableModal}>
             Annulla

@@ -46,9 +46,21 @@ const StyledCard = styled.div`
     position: absolute;
     background-color: red;
   }
+
+  [role="edit"]: {
+    display: none !important;
+  }
 `;
 
-const Card = ({ titolo, data, priorita, descrizione, done, id }) => {
+const Card = ({
+  titolo,
+  data,
+  priorita,
+  descrizione,
+  done,
+  id,
+  isEditable = true,
+}) => {
   /*
   Crea Stelline:
   1. Crea un Array di lunghezza pari al valore di priorità
@@ -76,7 +88,13 @@ const Card = ({ titolo, data, priorita, descrizione, done, id }) => {
           {/* <p>{done.toString()}</p> */}
           <div className='action'>
             <p>{data}</p>
-            <Button size='xs' onClick={toggleEditableModal}>
+            <Button
+              size='xs'
+              style={{
+                display: !isEditable && "none",
+              }}
+              onClick={toggleEditableModal}
+            >
               Edit
             </Button>
           </div>

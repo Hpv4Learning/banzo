@@ -13,9 +13,11 @@ const Column = ({ id, title, tasks }) => {
       <Box mt='24px'>
         <Box px='8px' py='4px' background='gray.900'>
           {tasks.length > 0 &&
-            tasks.map((task) => {
-              return <Card {...task} />;
-            })}
+            tasks
+              .filter((el) => !el.done)
+              .map((task) => {
+                return <Card {...task} />;
+              })}
         </Box>
       </Box>
     </Box>
