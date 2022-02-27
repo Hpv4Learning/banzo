@@ -25,7 +25,6 @@ const CardModal = ({ isEdit, id }) => {
   const isCardModalOpen = context.isCardModalOpen;
   const toggleCardModal = context.toggleCardModal;
   const activeColumns = context.activeColumns;
-  const editCards = context.editCards;
   const data = context.toDoList;
 
   const cardData = data.columns.find((x) => {

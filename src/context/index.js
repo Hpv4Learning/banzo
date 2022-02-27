@@ -66,11 +66,6 @@ const AppProvider = ({ children }) => {
     return { title: column.title, id: column.id };
   });
 
-
-
-
-
-  
   const editCards = (id, content) => {
     const newData = data.columns.map((colonna) => {
       if (!colonna.tasks.find((x) => x.id === id)) {
@@ -87,9 +82,17 @@ const AppProvider = ({ children }) => {
       };
     });
 
+    const newStorage = data.storage.map((task) => {
+      if (task.id === id) {
+        return { id, ...content };
+      }
+      return task;
+    });
+
     setData({
       ...data,
       columns: newData,
+      storage: newStorage,
     });
 
     setIsEditableModalOpen(false);
