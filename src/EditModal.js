@@ -12,7 +12,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 
-const CardModal = ({ isEdit, id }) => {
+const CardModal = ({ id }) => {
   // State per gestire input
 
   //Controlla che la task sia spuntata come completata o no
@@ -21,15 +21,15 @@ const CardModal = ({ isEdit, id }) => {
   // Tiene traccia della colonna che l'utente seleziona per inserirci la card
   const [column, setColumn] = React.useState("");
   const context = useGlobalContext();
-  const addTaskToColumn = context.addTaskToColumn;
-  const isCardModalOpen = context.isCardModalOpen;
-  const toggleCardModal = context.toggleCardModal;
+  const isEditableModalOpen = context.isEditableModalOpen;
+  const toggleEditableModal = context.toggleEditableModal;
   const activeColumns = context.activeColumns;
   const editCards = context.editCards;
   const data = context.toDoList;
 
   const cardData = data.columns.find((x) => {
     if (x.tasks.some((y) => y.id === id)) {
+      console.log("eccomi");
       return x.tasks.find((z) => z.id === id);
     }
     return false;
@@ -42,37 +42,21 @@ const CardModal = ({ isEdit, id }) => {
     descrizione: cardData ? cardData.descrizione : "",
   });
 
-  const handleCreation = (e) => {
-    e.preventDefault();
-    addTaskToColumn(column, { ...input, done: checked });
-    setInput({
-      titolo: "",
-      data: new Date(Date.now()),
-      priorita: 1,
-      descrizione: "",
-    });
-    setChecked(false);
-  };
-
-  const handleEdit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     editCards(id, input);
   };
-
-  const handleSubmit = isEdit ? handleEdit : handleCreation;
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   return (
-    <Modal isOpen={isCardModalOpen}>
+    <Modal isOpen={isEditableModalOpen}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          {isEdit ? "Modifica il Task" : "Crea il Task"}
-        </ModalHeader>
-        <ModalCloseButton onClick={context.toggleCardModal} />
+        <ModalHeader>Modifica il Task</ModalHeader>
+        <ModalCloseButton onClick={toggleEditableModal} />
         <ModalBody>
           <form
             onSubmit={handleSubmit}
@@ -143,9 +127,9 @@ const CardModal = ({ isEdit, id }) => {
         </ModalBody>
         <ModalFooter>
           <Button colorScheme='purple' type='submit' form='card-modal' mr={3}>
-            {isEdit ? "Modficia" : "Aggiungi"}
+            Modficia
           </Button>
-          <Button variant='ghost' onClick={toggleCardModal}>
+          <Button variant='ghost' onClick={toggleEditableModal}>
             Annulla
           </Button>
         </ModalFooter>
