@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Box, Container } from "@chakra-ui/react";
+import { Box, Container, Text } from "@chakra-ui/react";
 import Card from "./Card";
-import Column from "./Column";
 
 import { useGlobalContext } from "./context";
 
@@ -19,14 +18,22 @@ const Archivio = () => {
   const data = context.toDoList;
   return (
     <Container maxW='container.lg'>
-      <StyledDiv mt='30px' py='18px'>
-        <Column title='I Task Completati' tasks={data.storage}>
-          {data.storage.map((task) => {
-            if (!task.done) return null;
-            return <Card {...task} />;
-          })}
-        </Column>
-      </StyledDiv>
+      <Box width='100%'>
+        <Box mt='24px'>
+          <Box px='8px' py='4px' background='gray.900'>
+            <Text fontSize='18px'>{"Task Completi"}</Text>
+          </Box>
+        </Box>
+        {data.storage && data.storage.length > 0 && (
+          <Box mt='24px'>
+            <Box px='8px' py='4px' background='gray.900'>
+              {data.storage.map((task) => {
+                return <Card {...task} />;
+              })}
+            </Box>
+          </Box>
+        )}
+      </Box>
     </Container>
   );
 };
