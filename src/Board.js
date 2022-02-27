@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Column from "./Column";
 import CardModal from "./CardModal";
 import { useGlobalContext } from "./context";
-import { Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button, Container, HStack, Input } from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -27,8 +27,10 @@ const Board = () => {
   const data = context.toDoList;
   const creaColonna = context.creaColonna;
   const toggleCardModal = context.toggleCardModal;
+  const activeColumns = context.activeColumns;
 
-  console.log(data);
+  console.log(data.storage);
+
   //Controlla apertura del modal per creare un colonna
   const [isOpen, setIsOpen] = useState();
 
@@ -43,15 +45,30 @@ const Board = () => {
   };
 
   return (
-    <div>
-      <Box mt='30px'>
-        <Button color='peru' onClick={() => setIsOpen(true)}>
+    <Container maxW='container.lg'>
+      <HStack
+        mt='30px'
+        alignItems='center'
+        justifyContent='flex-end'
+        background='gray.900'
+        py='8px'
+        px='12px'
+      >
+        <Button
+          colorScheme='purple'
+          variant='outline'
+          onClick={() => setIsOpen(true)}
+        >
           Crea Colonna
         </Button>
-        <Button colorScheme='pink' onClick={toggleCardModal}>
+        <Button
+          colorScheme='purple'
+          disabled={activeColumns.length === 0}
+          onClick={toggleCardModal}
+        >
           Crea Il Task
         </Button>
-      </Box>
+      </HStack>
       <StyledDiv mt='30px' py='18px'>
         {data.columns.map((el, index) => {
           return <Column key={el.id} {...el} />;
@@ -78,7 +95,7 @@ const Board = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

@@ -9,9 +9,12 @@ const AppProvider = ({ children }) => {
 
   //Indica l'apertura e la chiusura del modal per la creazione di nuove task
   const [isCardModalOpen, setIsCardModalOpen] = React.useState(false);
+  const [isEditableModalOpen, setIsEditableModalOpen] = React.useState(false);
 
   //Funzione unica per aprire e chiudere il modal per la creazione delle cards
   const toggleCardModal = () => setIsCardModalOpen(!isCardModalOpen);
+  const toggleEditableModal = () =>
+    setIsEditableModalOpen(!isEditableModalOpen);
 
   //Aggiunge una Task ad una colonna esistente usando come filtro il titolo
   function addTaskToColumn(title, content) {
@@ -23,10 +26,6 @@ const AppProvider = ({ children }) => {
         if (task.done) doneTasks.push(task);
       });
 
-      if (newTask.done) {
-        doneTasks.push(newTask);
-      }
-
       if (colonna.title.toLowerCase() !== title.toLowerCase()) {
         return colonna;
       }
@@ -35,6 +34,10 @@ const AppProvider = ({ children }) => {
         tasks: [...colonna.tasks, newTask],
       };
     });
+
+    if (newTask.done) {
+      doneTasks.push(newTask);
+    }
 
     setData({
       ...data,
@@ -65,6 +68,30 @@ const AppProvider = ({ children }) => {
     return { title: column.title, id: column.id };
   });
 
+  const editCards = (id, content) => {
+    const newData = data.columns.map((colonna) => {
+      if (!colonna.tasks.find((x) => x.id === id)) {
+        return colonna;
+      }
+      return {
+        ...colonna,
+        tasks: colonna.tasks.map((el) => {
+          if (el.id === id) {
+            return { id, ...content };
+          }
+          return el;
+        }),
+      };
+    });
+
+    setData({
+      ...data,
+      columns: newData,
+    });
+
+    setIsCardModalOpen(false);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -72,8 +99,11 @@ const AppProvider = ({ children }) => {
         addTaskToColumn,
         creaColonna,
         toggleCardModal,
+        toggleEditableModal,
+        isEditableModalOpen,
         isCardModalOpen,
         activeColumns,
+        editCards,
       }}
     >
       {children}

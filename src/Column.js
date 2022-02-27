@@ -1,3 +1,4 @@
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import Card from "./Card";
 import { Box, Text } from "@chakra-ui/react";

@@ -2,14 +2,18 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Button, Text } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
+import EditCardModal from "./EditModal";
+import { useGlobalContext } from "./context";
 
 const StyledCard = styled.div`
-  width: 343px;
-  /* width: 100%; */
+  /* width: 343px; */
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
   padding: 16px;
   position: relative;
   border-radius: 0px 8px 8px 0px;
-  border: 1px solid #675649;
+  background: #2d3748;
 
   //Applica lo stile a tutti tranne al primo figlio diretto, proprietà gap su safari non è supportata
   // Fonte: https://caniuse.com/?search=gap
@@ -44,7 +48,7 @@ const StyledCard = styled.div`
   }
 `;
 
-const Card = ({ titolo, data, priorita, descrizione, done }) => {
+const Card = ({ titolo, data, priorita, descrizione, done, id }) => {
   /*
   Crea Stelline:
   1. Crea un Array di lunghezza pari al valore di priorità
@@ -55,23 +59,31 @@ const Card = ({ titolo, data, priorita, descrizione, done }) => {
     return <StarIcon boxSize={3} color='orange' />;
   });
 
+  const context = useGlobalContext();
+  const toggleEditableModal = context.toggleEditableModal;
+
   return (
-    <StyledCard>
-      <div className='spacer'>
-        <div className='card-info'>
-          <Text fontSize='md'>{titolo}</Text>
-          <div className='star-container'>
-            {stellineDiDio.map((stellina) => stellina)}
+    <>
+      <StyledCard>
+        <div className='spacer'>
+          <div className='card-info'>
+            <Text fontSize='md'>{titolo}</Text>
+            <div className='star-container'>
+              {stellineDiDio.map((stellina) => stellina)}
+            </div>
+          </div>
+          <Text fontSize='xs'>{descrizione}</Text>
+          {/* <p>{done.toString()}</p> */}
+          <div className='action'>
+            <p>{data}</p>
+            <Button size='xs' onClick={toggleEditableModal}>
+              Edit
+            </Button>
           </div>
         </div>
-        <Text fontSize='xs'>{descrizione}</Text>
-        {/* <p>{done.toString()}</p> */}
-        <div className='action'>
-          <p>{data}</p>
-          <Button size='xs'>Edit</Button>
-        </div>
-      </div>
-    </StyledCard>
+      </StyledCard>
+      <EditCardModal id={id} />
+    </>
   );
 };
 
